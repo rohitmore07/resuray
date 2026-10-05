@@ -1,0 +1,70 @@
+# Environment files
+# .env.example files are deliberately allowed through — they contain only
+# placeholder documentation and no real credentials.
+.env
+.env.*
+.env.local
+.env.production
+!.env.example
+!**/.env.example
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+**/dist/
+build/
+**/build/
+.next/
+**/.next/
+
+# Logs and test output
+*.log
+logs/
+**/logs/
+coverage/
+**/coverage/
+
+# Tool caches
+.turbo/
+**/.turbo/
+.cache/
+**/.cache/
+.vite/
+**/.vite/
+*.tsbuildinfo
+
+# Docker local overrides
+# docker-compose.override.yml is git-ignored by convention so that developers
+# can define local port mappings or volume mounts without affecting others.
+docker-compose.override.yml
+docker-compose.*.override.yml
+
+# IDE and editor files
+.vscode/
+**/.vscode/
+.idea/
+**/.idea/
+*.swp
+*.swo
+*.swn
+*~
+
+# Operating system files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Generated Prisma clients
+/backend/prisma/generated/
+/backend/src/generated/prisma/
+
+# Bun lockfile policy:
+# The text-format bun.lock file is committed so that CI and all contributors
+# use identical dependency resolutions.  The legacy binary bun.lockb format
+# is excluded because it is not human-readable in diffs.
+bun.lockb
+**/bun.lockb
