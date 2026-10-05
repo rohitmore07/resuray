@@ -12,16 +12,13 @@ import {
   Layers,
 } from "lucide-react";
 import { PageShell } from "../components/PageShell";
-import { cloneElement, type ReactElement } from "react";
 
 interface LandingPageProps {
   theme: "light" | "dark";
   toggleTheme: () => void;
-  isSignedIn?: boolean;
-  onGetStarted?: () => void;
 }
 
-export function LandingPage({ theme, toggleTheme, isSignedIn, onGetStarted }: LandingPageProps) {
+export function LandingPage({ theme, toggleTheme }: LandingPageProps) {
   return (
     <PageShell
       title="Resumark"
@@ -36,7 +33,7 @@ export function LandingPage({ theme, toggleTheme, isSignedIn, onGetStarted }: La
           >
             Sign in
           </button>
-        </SignInButton>;
+        </SignInButton>
       }
     >
       <div className="flex flex-col gap-20 sm:gap-28">
