@@ -18,10 +18,28 @@ function App() {
 
   const toggleTheme = () => setTheme((p) => (p === "dark" ? "light" : "dark"));
 
+  // Signed-in users open straight into the app; clicking the brand shows the landing page.
+  const [view, setView] = useState<"landing" | "app">("app");
+
   return (
     <>
       <SignedIn>
-        <AuthenticatedApp theme={theme} toggleTheme={toggleTheme} />
+        {/* Kept mounted but hidden so an upload/analysis in progress isn't lost */}
+        <div className={view === "app" ? "" : "hidden"}>
+          <AuthenticatedApp
+            theme={theme}
+            toggleTheme={toggleTheme}
+            onGoHome={() => setView("landing")}
+          />
+        </div>
+        {view === "landing" && (
+          <LandingPage
+            theme={theme}
+            toggleTheme={toggleTheme}
+            isSignedIn
+            onGetStarted={() => setView("app")}
+          />
+        )}
       </SignedIn>
       <SignedOut>
         <LandingPage theme={theme} toggleTheme={toggleTheme} />
@@ -31,13 +49,21 @@ function App() {
 }
 
 /* ─── Authenticated ──────────────────────── */
-function AuthenticatedApp({ theme, toggleTheme }: { theme: "light" | "dark"; toggleTheme: () => void }) {
+function AuthenticatedApp({
+  theme,
+  toggleTheme,
+  onGoHome,
+}: {
+  theme: "light" | "dark";
+  toggleTheme: () => void;
+  onGoHome: () => void;
+}) {
   const { getToken } = useAuth();
   useEffect(() => {
     registerGetToken(getToken);
   }, [getToken]);
 
-  return <UploadPage theme={theme} toggleTheme={toggleTheme} />;
+  return <UploadPage theme={theme} toggleTheme={toggleTheme} onGoHome={onGoHome} />;
 }
 
 export default App;

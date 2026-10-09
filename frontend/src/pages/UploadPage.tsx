@@ -150,6 +150,7 @@ export const UploadPage: React.FC<UploadPageProps> = ({ theme, toggleTheme, onGo
         theme={theme}
         toggleTheme={toggleTheme}
         rightContent={<UserButton />}
+        onBrandClick={onGoHome}
       >
         <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
           <div className="flex flex-col gap-8 max-w-xl mx-auto w-full">

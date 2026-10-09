@@ -1,3 +1,4 @@
+import { cloneElement, type ReactElement } from "react";
 import { SignInButton } from "@clerk/clerk-react";
 import {
   ArrowRight,
@@ -16,25 +17,33 @@ import { PageShell } from "../components/PageShell";
 interface LandingPageProps {
   theme: "light" | "dark";
   toggleTheme: () => void;
+  isSignedIn?: boolean;
+  onGetStarted?: () => void;
 }
 
-export function LandingPage({ theme, toggleTheme }: LandingPageProps) {
+export function LandingPage({ theme, toggleTheme, isSignedIn, onGetStarted }: LandingPageProps) {
+  // Signed in: the button opens the app. Signed out: it opens the Clerk sign-in modal.
+  const withAuth = (btn: ReactElement<{ onClick?: () => void }>) =>
+    isSignedIn ? (
+      cloneElement(btn, { onClick: onGetStarted })
+    ) : (
+      <SignInButton mode="modal">{btn}</SignInButton>
+    );
+
   return (
     <PageShell
       title="Resumark"
       subtitle="Structured Auditing"
       theme={theme}
       toggleTheme={toggleTheme}
-      rightContent={
-        <SignInButton mode="modal">
-          <button
-            id="nav-sign-in-btn"
-            className="inline-flex h-9 items-center gap-2 rounded bg-stone-900 dark:bg-stone-100 px-4 text-[13px] font-medium text-stone-100 dark:text-stone-900 transition hover:opacity-90 active:scale-95 border border-stone-850 dark:border-stone-200"
-          >
-            Sign in
-          </button>
-        </SignInButton>
-      }
+      rightContent={withAuth(
+        <button
+          id="nav-sign-in-btn"
+          className="inline-flex h-9 items-center gap-2 rounded bg-stone-900 dark:bg-stone-100 px-4 text-[13px] font-medium text-stone-100 dark:text-stone-900 transition hover:opacity-90 active:scale-95 border border-stone-850 dark:border-stone-200"
+        >
+          {isSignedIn ? "Open app" : "Sign in"}
+        </button>
+      )}
     >
       <div className="flex flex-col gap-20 sm:gap-28">
 
@@ -60,7 +69,7 @@ export function LandingPage({ theme, toggleTheme }: LandingPageProps) {
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-6">
-                <SignInButton mode="modal">
+                {withAuth(
                   <button
                     id="hero-cta-btn"
                     className="inline-flex h-11 items-center gap-2 rounded bg-stone-900 dark:bg-stone-100 px-6 text-[14px] font-medium text-stone-100 dark:text-stone-900 transition hover:opacity-90 active:scale-95"
@@ -68,7 +77,7 @@ export function LandingPage({ theme, toggleTheme }: LandingPageProps) {
                     Start resume audit
                     <ArrowRight className="h-4 w-4" />
                   </button>
-                </SignInButton>
+                )}
                 <div className="flex items-center gap-4 text-[13px] text-secondary-theme font-mono">
                   <span className="flex items-center gap-1.5">
                     <Check className="h-4 w-4 text-accent-theme" />
